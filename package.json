@@ -1,0 +1,93 @@
+{
+    "name": "@rshaker/context-detect",
+    "version": "0.2.3",
+    "description": "Messaging support for inter-context communication",
+    "license": "MIT",
+    "author": {
+        "name": "Ron Shaker",
+        "email": "rshaker@gmail.com",
+        "url": "https://github.com/rshaker"
+    },
+    "bugs": {
+        "url": "https://github.com/rshaker/context-detect/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/rshaker/context-detect.git"
+    },
+    "publishConfig": {},
+    "homepage": "https://github.com/rshaker/context-detect",
+    "keywords": [
+        "browser",
+        "chrome",
+        "context",
+        "detection",
+        "msedge",
+        "extension",
+        "firefox",
+        "javascript",
+        "library",
+        "mv3",
+        "node",
+        "npm",
+        "playwright",
+        "typescript",
+        "webpack"
+    ],
+    "scripts": {
+        "build": "npm run build:prod",
+        "build:webext:dev": "npm run clean:webext && webpack --mode development --config webpackExtension.config.js",
+        "build:webext:prod": "npm run clean:webext && webpack --mode production --config webpackExtension.config.js",
+        "build:webext:dev:watch": "npm run clean:webext && webpack --mode development --config webpackExtension.config.js --watch",
+        "build:webext:prod:watch": "npm run clean:webext && webpack --mode production --config webpackExtension.config.js --watch",
+        "build:dev": "npm run clean:dist && webpack --mode development --config webpack.config.js",
+        "build:dev:watch": "npm run clean:dist && webpack --mode development --config webpack.config.js --watch",
+        "build:prod": "npm run clean:dist && webpack --mode production --config webpack.config.js",
+        "build:prod:watch": "npm run clean:dist && webpack --mode production --config webpack.config.js --watch",
+        "clean": "npm run clean:dist && npm run clean:browsers && npm run clean:webext",
+        "clean:browsers": "rimraf work/browsers",
+        "clean:dist": "rimraf dist",
+        "clean:playwright": "rimraf playwright/playwright-report playwright/test-results",
+        "clean:webext": "rimraf webext",
+        "playwright:install-browsers": "PLAYWRIGHT_BROWSERS_PATH=0 playwright install",
+        "playwright:report": "playwright show-report playwright/playwright-report",
+        "playwright:test:dev": "npm run build:webext:dev && npm run build:dev && playwright test",
+        "playwright:test:prod": "npm run build:webext:prod && npm run build:prod && playwright test",
+        "playwright:test-ui:dev": "npm run build:webext:dev && npm run build:dev && playwright test --ui",
+        "playwright:test-ui:prod": "npm run build:webext:prod && npm run build:prod && playwright test --ui",
+        "serve": "webpack serve --config webpackDevServer.config.js",
+        "test": "npm run playwright:test:prod"
+    },
+    "main": "./dist/contextDetect.js",
+    "types": "./dist/src/index.d.ts",
+    "files": [
+        "dist"
+    ],
+    "devDependencies": {
+        "@mdn/browser-compat-data": "^6.0.8",
+        "@playwright/test": "^1.49.1",
+        "@types/chrome": "^0.0.287",
+        "@types/firefox-webext-browser": "^120.0.4",
+        "@types/node": "^22.10.2",
+        "@types/webpack": "^5.28.5",
+        "copy-webpack-plugin": "^11.0.0",
+        "date-fns": "^4.1.0",
+        "dotenv": "^16.4.7",
+        "playwright": "^1.51.1",
+        "rimraf": "^5.0.5",
+        "style-loader": "^4.0.0",
+        "ts-loader": "^9.0.0",
+        "ts-node": "^10.0.0",
+        "typescript": "^5.0.0",
+        "webextension-polyfill": "^0.12.0",
+        "webpack": "^5.0.0",
+        "webpack-cli": "^4.0.0",
+        "webpack-dev-server": "^4.15.1"
+    },
+    "browserslist": [
+        "last 2 Chrome versions"
+    ],
+    "engines": {
+        "node": ">=22.12.0"
+    }
+}

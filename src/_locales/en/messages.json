@@ -1,0 +1,11 @@
+{
+    "extension_name": {
+        "message": "Test extension for context-detect library"
+    },
+    "extension_description": {
+        "message": "Example usage of the context-detect library"
+    },
+    "action_title": {
+        "message": "context-detect"
+    }
+}

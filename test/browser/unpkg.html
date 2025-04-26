@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>browser test</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            font-size: 120%;
+            color: wheat;
+            background-color: darkgreen;
+        }
+
+        #blocklyDiv {
+            height: 100vh;
+            width: 100vw;
+        }
+    </style>
+    <script src="../../dist/contextDetect.js"></script>
+</head>
+
+<body>
+    Open the console to see the results.
+    <script>
+        console.info("detectContext", contextDetect.detectContext());
+        console.info("getBrowserName", contextDetect.getBrowserName());
+        console.info("navigator.userAgent", navigator.userAgent);
+    </script>
+</body>
+
+</html>
