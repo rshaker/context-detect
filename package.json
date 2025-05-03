@@ -1,6 +1,6 @@
 {
     "name": "@rshaker/context-detect",
-    "version": "0.2.4",
+    "version": "0.2.5",
     "description": "Messaging support for inter-context communication",
     "license": "MIT",
     "author": {
