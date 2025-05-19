@@ -9,13 +9,7 @@ module.exports = (_env, argv) => {
     // Entry points for production mode
     const entries = {
         contextDetect: "./src/index.ts",
-        // telemetryExample: "./src/scripts/telemetryExample.ts",
     };
-
-    // Additional entries for development mode
-    if (isDevelopment) {
-        // entries.toolkit = "./src/util/toolkit.ts";
-    }
 
     // Create a separate bundle for each entry point
     return Object.keys(entries).map((entry) => ({

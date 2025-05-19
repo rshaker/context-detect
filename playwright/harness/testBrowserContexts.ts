@@ -1,6 +1,6 @@
 import { detectContext, BrowserContextType } from "../../src/contextDetect";
 
-export async function getCurrentAndPageContexts() {
+export async function getAllContexts(): Promise<any[]> {
     const currentContext = detectContext();
     let results: any[] = [currentContext];
 
@@ -10,7 +10,7 @@ export async function getCurrentAndPageContexts() {
     return results;
 }
 
-export async function getPageContexts() {
+export async function getPageContexts(): Promise<any[]> {
     let results: any[] = [];
 
     const tabs = await chrome.tabs.query({}); // {url: "<all_urls>"} or {url: "https://example.com/*"}
@@ -46,8 +46,8 @@ export async function getPageContexts() {
 }
 
 globalThis.getBrowserContext = detectContext;
+globalThis.getAllContexts = getAllContexts;
 globalThis.getPageContexts = getPageContexts;
-globalThis.getCurrentAndPageContexts = getCurrentAndPageContexts;
 
 console.log("testBrowserContexts.js loaded");
 

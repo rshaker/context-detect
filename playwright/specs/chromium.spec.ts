@@ -1,8 +1,8 @@
 import path from "path"
-import { BrowserContext, Page, test, Worker } from "@playwright/test";
+import { BrowserContext, Page, test, Worker, expect } from "@playwright/test";
 import { chromium, firefox, webkit } from "playwright";
 import fs from 'fs';
-import bcd from '@mdn/browser-compat-data' with { type: 'json' };
+// import bcd from '@mdn/browser-compat-data' with { type: 'json' };
 
 const extensionPath = path.join(__dirname, "../../webext/chrome");
 // const userDataDir = path.join(__dirname, "../.user-data");
@@ -19,10 +19,8 @@ test.describe("Test with extension", () => {
     test.beforeAll(async () => {
         context = await chromium.launchPersistentContext(userDataDir, {
             headless: false, // Extension can't be loaded in headless mode
-            viewport: { width: 1200, height: 800 },
-            screen: { width: 1200, height: 800 },
             args: [
-                `--window-size=1600,1000`, 
+                // `--window-size=1280,1000`, 
                 `--disable-extensions-except=${extensionPath}`, 
                 `--load-extension=${extensionPath}`,
                 "--disable-web-security",
@@ -53,49 +51,49 @@ test.describe("Test with extension", () => {
         await context.close();
     });
 
-    test("Browser compat data", async () => {
-        console.log(bcd.webextensions.__compat?.support);
+    // test("Browser compat data", async () => {
+    //     console.log(bcd.webextensions.__compat?.support);
+    //     // Pause (for debugging)
+    //     test.setTimeout(0);
+    //     await page.pause();
+    // });
 
-        // Pause (for debugging)
-        test.setTimeout(0);
-        await page.pause();
-    });
-
-    test("Test getBrowserContext()", async () => {
-        // await page.evaluate(async () => {
-        //     console.log("Maintenance script running");
-        //     //# sourceURL=page.evaluate
-        // });
-
-        /**************************************************************** 
-        THIS IS NOW WORKING: Background context is detected, and both page
-        contexts are detected via the service worker's executeScript.
-        Tools are first attached to globalThis in MAIN and ISOLATED worlds,
-        then the context is read from the page by calling 
-        globalThis.getBrowserContext()
-        *****************************************************************/
-
-        // Read the file contents (could be a compiled JS file)
+    test("Test context detection", async () => {
+        // Read the file contents (could be a transpiled JS file)
         const scriptPath = path.join(__dirname, "../../webext/chrome/playwright/harness/testBrowserContexts.js");
         const scriptContent = fs.readFileSync(scriptPath, "utf8");
 
         // Check the context types of the background worker and all open pages
         const workers = context.serviceWorkers();
-        workers.forEach(async (worker) => {
+        for (const worker of workers) {
             // Find the background service worker
             if (worker.url() === `chrome-extension://${extensionId}/background.js`) {
-                // Install the script in the service worker
+                // Install the toolkit in the service worker, then start calling functions
                 await worker.evaluate(scriptContent);
                 const result = await serviceWorker.evaluate(async () => {
-                    // return await globalThis.getBrowserContext();
-                    return await globalThis.getCurrentAndPageContexts();
+                    return await globalThis.getAllContexts();
                 });
-                console.log("Service worker result:", result);
+                // console.log("Result from getAllContexts:", result);
+                // Assert that the result matches the expected structure, ignoring documentId value
+                expect(Array.isArray(result)).toBe(true);
+                expect(result[0]).toBe("background-worker");
+                expect(Array.isArray(result[1])).toBe(true);
+                expect(Array.isArray(result[2])).toBe(true);
+                expect(result[1][0]).toMatchObject({
+                    frameId: 0,
+                    result: "main-world",
+                });
+                expect(typeof result[1][0].documentId).toBe("string");
+                expect(result[2][0]).toMatchObject({
+                    frameId: 0,
+                    result: "isolated-world",
+                });
+                expect(typeof result[2][0].documentId).toBe("string");
             }
-        });
+        }
 
         // Pause (for debugging)
-        test.setTimeout(0);
-        await page.pause();
+        // test.setTimeout(0);
+        // await page.pause();
     });
 });

@@ -2,10 +2,13 @@
 
 ![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue)
 ![License](https://img.shields.io/github/license/rshaker/context-detect)
+![version](https://img.shields.io/github/package-json/v/rshaker/context-detect)
 
 ## Overview
 
-Suppose you're a piece of code running in some context of some browser's javascript engine, and you need to determine what your API options are. This won't tell you your specific options, but it will tell you what type of environment (context) you're saddled with. That's the sole purpose of this library, to tell you in which browser and context you are currently executing.
+Suppose you're a piece of code running in some context of some browser's javascript engine, and you need to determine what your API options are. This won't tell you your specific options, but it will tell you what type of environment (context) you're saddled with. That's its sole purpose, to tell you in which browser and context you are currently executing.
+
+The library is designed to work in main, isolated, background, extension page, action popup, worker, and shared worker contexts. Not for use in server-side contexts such as Node.
 
 ## Installation
 
@@ -71,6 +74,10 @@ npm run build:dev
 # Build all browser extensions (chrome, firefox)
 npm run build:webext:dev
 ```
+
+## Documentation
+
+Full API documentation (generated with TypeDoc) is available under the <a href="https://rshaker.github.io/context-detect/docs">docs</a> directory. Auto-generated docs contains class, interface, and type details for all modules.
 
 ## Basic detection logic
 
