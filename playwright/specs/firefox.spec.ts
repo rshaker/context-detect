@@ -38,7 +38,7 @@ test.describe("Test with extension", () => {
         });
 
         // Pause (for debugging)
-        test.setTimeout(0);
-        await page.pause();
+        // test.setTimeout(0);
+        // await page.pause();
     });
 });
