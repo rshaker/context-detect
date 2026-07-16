@@ -1,7 +1,7 @@
 {
     "name": "@rshaker/context-detect",
-    "version": "0.2.5",
-    "description": "Messaging support for inter-context communication",
+    "version": "0.2.6",
+    "description": "Detects which browser and JavaScript execution context (e.g. background worker, popup, extension page, isolated world, main world) a script is running in",
     "license": "MIT",
     "author": {
         "name": "Ron Shaker",

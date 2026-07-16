@@ -62,7 +62,7 @@ cd context-detect
 nvm use
 npm install
 
-# Hermetic brower installation requires `PLAYWRIGHT_BROWSERS_PATH=0`
+# Hermetic browser installation requires `PLAYWRIGHT_BROWSERS_PATH=0`
 PLAYWRIGHT_BROWSERS_PATH=0 npx playwright install
 
 # Build library
