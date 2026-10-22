@@ -19,11 +19,8 @@ module.exports = (_env, argv) => {
             settings: "./src/settings.ts", // Needed to access IndexedDB's UI in devtools
             "scripts/worldMain": "./src/scripts/worldMain.ts",
             "scripts/worldIsolated": "./src/scripts/worldIsolated.ts",
-            ...(isDevelopment
-                ? {
-                      "playwright/harness/testBrowserContexts": "./playwright/harness/testBrowserContexts.ts",
-                  }
-                : {}),
+            // Test harness is needed by the Playwright specs in both dev and prod builds
+            "playwright/harness/testBrowserContexts": "./playwright/harness/testBrowserContexts.ts",
         },
         output: {
             path: path.resolve(__dirname, "webext", browser),
