@@ -57,27 +57,41 @@ console.info("navigator.userAgent", navigator.userAgent);
 The library built by this project is intended for use by web extension developers, and is best integrated into projects via the npm package manager.
 
 ```bash
-# Clone the private repo
+# Clone the repo
 git clone git@github.com:rshaker/context-detect.git
 cd context-detect
 
-# Requires node v22.12.0+ 
+# Requires node v22.12.0+
 nvm use
 npm install
 
 # Hermetic browser installation requires `PLAYWRIGHT_BROWSERS_PATH=0`
-PLAYWRIGHT_BROWSERS_PATH=0 npx playwright install
+npm run playwright:install-browsers
 
-# Build library
+# Build the library (dist/), in development or production mode
 npm run build:dev
+npm run build:prod
 
-# Build all browser extensions (chrome, firefox)
+# Build the test extensions (webext/chrome, webext/edge, webext/firefox)
 npm run build:webext:dev
+
+# Run the Playwright suite against the development build
+npm run test
+
+# Build the npm tarball and check it
+npm run pack
+
+# Check the public API against the previous release
+npm run test:compat
 ```
 
 ## Documentation
 
-Full API documentation (generated with TypeDoc) is available under the <a href="https://rshaker.github.io/context-detect/docs">docs</a> directory. Auto-generated docs contains class, interface, and type details for all modules.
+Full API documentation (generated with TypeDoc) is available under the <a href="https://rshaker.github.io/context-detect/docs">docs</a> directory. Auto-generated docs contains class, interface, and type details for all modules. `npm run docs` writes it to `docs/dist/`.
+
+## Releasing
+
+Development happens on `main`. A release is a `vX.Y.Z` tag; pushing it makes a GitHub Release with the npm tarball attached and the matching section of [CHANGELOG.md](CHANGELOG.md) as notes, and `npm run release:publish` then publishes that same tarball to npm. [docs/releasing.md](docs/releasing.md) describes the branches, versions, tags and the release sequence; [docs/release-checks.md](docs/release-checks.md) is the manual checklist run before a release is tagged.
 
 ## Basic detection logic
 

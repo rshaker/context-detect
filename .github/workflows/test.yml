@@ -1,0 +1,51 @@
+name: Build, test and pack
+
+# Every push to main builds the test extension and the library in
+# production mode, runs the Playwright suite against them, and packs the
+# library with its checker, so a package that would fail the release
+# workflow is caught before release day.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Build the test extension and the library
+        run: npm run build:webext:prod && npm run build:prod
+
+      - name: Run the Playwright suite
+        run: xvfb-run --auto-servernum --server-args='-screen 0 1280x1024x24' npx playwright test
+
+      - name: Upload the Playwright report on failure
+        if: failure()
+        uses: actions/upload-artifact@v6
+        with:
+          name: playwright-report
+          path: playwright/playwright-report
+          retention-days: 7
+
+      - name: Build and check the npm tarball
+        run: npm run pack

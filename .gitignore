@@ -19,13 +19,14 @@
 # dependency directories
 node_modules
 
-# production distribution
+# production distribution and the npm tarball
 /dist
+/*.tgz
 
 # purgable, throw-away files
 /tmp
 /work
-/docs
+/docs/dist
 
 # developer notes
 /admin
