@@ -27,6 +27,16 @@ const fail = (message) => {
 };
 
 if (!/^\d+\.\d+\.\d+$/.test(version)) fail(`"${version}" is not a plain X.Y.Z version.`);
+
+// An expired or missing login makes `npm publish` of a scoped package fail with a misleading
+// 404 on the PUT, so check the session first.
+let user = "";
+try {
+    user = out("npm", ["whoami"], { stdio: ["ignore", "pipe", "ignore"] });
+} catch {
+    fail("You are not logged in to npm (`npm whoami` failed). Run `npm login`, then run this again.");
+}
+console.log(`Publishing as npm user ${user}.`);
 if (!out("git", ["ls-remote", "--tags", "origin", `refs/tags/${tag}`])) fail(`Tag ${tag} is not on origin; a release is its pushed tag.`);
 
 let published = "";
