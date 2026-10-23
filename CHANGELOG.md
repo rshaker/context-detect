@@ -8,6 +8,8 @@ npm tarball and this file's section for the version.
 
 ## [Unreleased]
 
+## [0.2.7] - 2026-10-22
+
 ### Added
 
 - This changelog, and a documented release process: `docs/releasing.md`
